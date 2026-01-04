@@ -3,6 +3,12 @@
 
 #include <cstdint>
 
+struct CudaResizePerfStats {
+    float h2d_time_ms;
+    float kernel_time_ms;
+    float d2h_time_ms;
+};
+
 /**
  * 使用CUDA进行图像缩放
  * 
@@ -13,6 +19,7 @@
  * @param dst_width 目标图像宽度
  * @param dst_height 目标图像高度
  * @param channels 图像通道数(3=RGB, 4=RGBA)
+ * @param stats 可选的性能统计指针
  * @return true表示成功,false表示失败
  */
 bool resizeImageCUDA(
@@ -22,7 +29,8 @@ bool resizeImageCUDA(
     uint8_t* dst,
     int dst_width,
     int dst_height,
-    int channels
+    int channels,
+    CudaResizePerfStats* stats = nullptr
 );
 
 #endif // CUDA_RESIZE_H

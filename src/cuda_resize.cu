@@ -88,7 +88,8 @@ bool resizeImageCUDA(
     uint8_t* dst,
     int dst_width,
     int dst_height,
-    int channels
+    int channels,
+    CudaResizePerfStats* stats
 )
 {
     // 计算图像数据大小
@@ -102,8 +103,20 @@ bool resizeImageCUDA(
     CUDA_CHECK(cudaMalloc(&d_src, src_size));
     CUDA_CHECK(cudaMalloc(&d_dst, dst_size));
 
+    // 准备计时事件
+    cudaEvent_t start, after_h2d, after_kernel, stop;
+    if (stats) {
+        cudaEventCreate(&start);
+        cudaEventCreate(&after_h2d);
+        cudaEventCreate(&after_kernel);
+        cudaEventCreate(&stop);
+        cudaEventRecord(start);
+    }
+
     // 将源图像数据复制到GPU
     CUDA_CHECK(cudaMemcpy(d_src, src, src_size, cudaMemcpyHostToDevice));
+
+    if (stats) cudaEventRecord(after_h2d);
 
     // 计算缩放比例
     float scale_x = static_cast<float>(src_width) / dst_width;
@@ -125,10 +138,32 @@ bool resizeImageCUDA(
 
     // 检查kernel执行错误
     CUDA_CHECK(cudaGetLastError());
-    CUDA_CHECK(cudaDeviceSynchronize());
+    if (stats) cudaEventRecord(after_kernel);
+    
+    // 如果不统计时间,需要同步以确保kernel完成
+    if (!stats) CUDA_CHECK(cudaDeviceSynchronize());
 
     // 将结果复制回主机
     CUDA_CHECK(cudaMemcpy(dst, d_dst, dst_size, cudaMemcpyDeviceToHost));
+
+    if (stats) {
+        cudaEventRecord(stop);
+        cudaEventSynchronize(stop);
+        
+        float h2d, kernel, d2h;
+        cudaEventElapsedTime(&h2d, start, after_h2d);
+        cudaEventElapsedTime(&kernel, after_h2d, after_kernel);
+        cudaEventElapsedTime(&d2h, after_kernel, stop);
+        
+        stats->h2d_time_ms = h2d;
+        stats->kernel_time_ms = kernel;
+        stats->d2h_time_ms = d2h;
+        
+        cudaEventDestroy(start);
+        cudaEventDestroy(after_h2d);
+        cudaEventDestroy(after_kernel);
+        cudaEventDestroy(stop);
+    }
 
     // 释放GPU内存
     cudaFree(d_src);

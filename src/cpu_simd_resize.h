@@ -24,4 +24,17 @@ void resizeImageCPU_SIMD(
     int channels
 );
 
+/**
+ * 使用CPU SIMD(AVX2) + OpenMP多线程进行图像缩放
+ */
+void resizeImageCPU_SIMD_OMP(
+    const uint8_t* src,
+    int src_width,
+    int src_height,
+    uint8_t* dst,
+    int dst_width,
+    int dst_height,
+    int channels
+);
+
 #endif // CPU_SIMD_RESIZE_H

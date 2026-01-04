@@ -17,8 +17,9 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 find_package(CUDA REQUIRED)
 include_directories(${CUDA_INCLUDE_DIRS})
 
-# 添加AVX2编译标志
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -mfma")
+# 查找OpenMP (用于CPU多线程)
+find_package(OpenMP REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -mfma ${OpenMP_CXX_FLAGS}")
 
 # 设置CUDA架构 (根据您的GPU调整)
 set(CMAKE_CUDA_ARCHITECTURES 75 86)
