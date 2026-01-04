@@ -1,0 +1,3 @@
+/home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/edit_cache.dir
+/home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/rebuild_cache.dir
+/home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/image_resize_benchmark.dir

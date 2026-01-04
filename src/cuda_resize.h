@@ -1,0 +1,28 @@
+#ifndef CUDA_RESIZE_H
+#define CUDA_RESIZE_H
+
+#include <cstdint>
+
+/**
+ * 使用CUDA进行图像缩放
+ * 
+ * @param src 源图像数据指针(主机内存)
+ * @param src_width 源图像宽度
+ * @param src_height 源图像高度
+ * @param dst 目标图像数据指针(主机内存,需要预先分配)
+ * @param dst_width 目标图像宽度
+ * @param dst_height 目标图像高度
+ * @param channels 图像通道数(3=RGB, 4=RGBA)
+ * @return true表示成功,false表示失败
+ */
+bool resizeImageCUDA(
+    const uint8_t* src,
+    int src_width,
+    int src_height,
+    uint8_t* dst,
+    int dst_width,
+    int dst_height,
+    int channels
+);
+
+#endif // CUDA_RESIZE_H

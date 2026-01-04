@@ -1,0 +1,60 @@
+Performing C++ SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_2400d/fast && /usr/bin/make  -f CMakeFiles/cmTC_2400d.dir/build.make CMakeFiles/cmTC_2400d.dir/build
+make[1]: Entering directory '/home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_2400d.dir/src.cxx.o
+/usr/bin/c++ -DCMAKE_HAVE_LIBC_PTHREAD  -std=gnu++1z -o CMakeFiles/cmTC_2400d.dir/src.cxx.o -c /home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_2400d
+/opt/cmake-3.19.8/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2400d.dir/link.txt --verbose=1
+/usr/bin/c++ CMakeFiles/cmTC_2400d.dir/src.cxx.o -o cmTC_2400d 
+/usr/bin/ld: CMakeFiles/cmTC_2400d.dir/src.cxx.o: in function `main':
+src.cxx:(.text+0x3e): undefined reference to `pthread_create'
+/usr/bin/ld: src.cxx:(.text+0x4a): undefined reference to `pthread_detach'
+/usr/bin/ld: src.cxx:(.text+0x56): undefined reference to `pthread_cancel'
+/usr/bin/ld: src.cxx:(.text+0x67): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_2400d.dir/build.make:106: cmTC_2400d] Error 1
+make[1]: Leaving directory '/home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:140: cmTC_2400d/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_c0e9b/fast && /usr/bin/make  -f CMakeFiles/cmTC_c0e9b.dir/build.make CMakeFiles/cmTC_c0e9b.dir/build
+make[1]: Entering directory '/home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_c0e9b.dir/CheckFunctionExists.cxx.o
+/usr/bin/c++   -DCHECK_FUNCTION_EXISTS=pthread_create -std=gnu++1z -o CMakeFiles/cmTC_c0e9b.dir/CheckFunctionExists.cxx.o -c /home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_c0e9b
+/opt/cmake-3.19.8/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c0e9b.dir/link.txt --verbose=1
+/usr/bin/c++  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_c0e9b.dir/CheckFunctionExists.cxx.o -o cmTC_c0e9b  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_c0e9b.dir/build.make:106: cmTC_c0e9b] Error 1
+make[1]: Leaving directory '/home/youyi/OpenProjects/learnSIMD/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:140: cmTC_c0e9b/fast] Error 2
+
+
+
