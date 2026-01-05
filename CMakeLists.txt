@@ -31,6 +31,8 @@ set(SOURCES
     src/cuda_resize.cu
     src/cpu_crop.cpp
     src/cuda_crop.cu
+    src/cpu_norm.cpp
+    src/cuda_norm.cu
 )
 
 # 创建可执行文件
