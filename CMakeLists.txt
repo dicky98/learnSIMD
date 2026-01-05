@@ -29,6 +29,8 @@ set(SOURCES
     src/main.cpp
     src/cpu_simd_resize.cpp
     src/cuda_resize.cu
+    src/cpu_crop.cpp
+    src/cuda_crop.cu
 )
 
 # 创建可执行文件
